@@ -1,0 +1,49 @@
+{
+  "name": "grunt-gherkin-report",
+  "description": "It saves your gherking features in a html format",
+  "version": "0.1.0",
+  "homepage": "https://github.com/opentable/grunt-gherkin-report",
+  "author": {
+    "name": "Matteo Figus",
+    "email": "matteofigus@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/opentable/grunt-gherkin-report.git"
+  },
+  "bugs": {
+    "url": "https://github.com/opentable/grunt-gherkin-report/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/opentable/grunt-gherkin-report/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.2"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin",
+    "gherkin",
+    "cucumber",
+    "specflow",
+    "feature",
+    "bdd"
+  ],
+  "dependencies": {
+    "underscore": "~1.6.0"
+  }
+}
