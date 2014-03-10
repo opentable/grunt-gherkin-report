@@ -1,4 +1,4 @@
-# grunt-gherkin-report
+# grunt-gherkin-report WIP!
 
 > It saves your gherking features in a html format
 
@@ -8,23 +8,23 @@ This plugin requires Grunt `~0.4.2`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-specflow --save-dev
+npm install grunt-gherkin-report --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-specflow');
+grunt.loadNpmTasks('grunt-gherkin-report');
 ```
 
-## The "specflow" task
+## The "gherkin_report" task
 
 ### Overview
-In your project's Gruntfile, add a section named `specflow` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `gherkin_report` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  specflow: {
+  gherkin_report: {
     options: {
       // Task-specific options go here.
     },

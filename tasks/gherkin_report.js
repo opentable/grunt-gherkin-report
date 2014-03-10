@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   var path = require('path');
   var _ = require('underscore');
 
-  grunt.registerMultiTask('gherkin_report', 'It saves your specflow features files in a html format', function() {
+  grunt.registerMultiTask('gherkin_report', 'It saves your Cucumber/Specflow features files in a html format', function() {
 
     var options = this.options({});
 

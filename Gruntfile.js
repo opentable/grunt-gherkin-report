@@ -1,11 +1,3 @@
-/*
- * grunt-specflow
- * https://github.com/admin/grunt-specflow
- *
- * Copyright (c) 2014 Matteo Figus
- * Licensed under the MIT license.
- */
-
 'use strict';
 
 module.exports = function(grunt) {
