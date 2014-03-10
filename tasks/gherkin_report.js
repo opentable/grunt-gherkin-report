@@ -12,10 +12,21 @@ module.exports = function(grunt) {
     var content = "";
     var template = grunt.file.read(path.join(__dirname, 'template.html'));
 
+    var getFeatureName = function(fileContent){
+      var lines = fileContent.split("\n");
+
+      for(var i = 0; i < lines.length; i++){
+        var line = lines[i];
+        if(line.indexOf('Feature:') >= 0){
+          return line.replace('Feature:', '').trim();
+        }
+      }
+      return "Unnamed feature";
+    };
+
     this.files.forEach(function(f) {
 
-      var fileContent = f.src.filter(function(filepath) {
-
+      var validFiles = f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
           grunt.log.warn('Source file "' + filepath + '" not found.');
           return false;
@@ -24,18 +35,18 @@ module.exports = function(grunt) {
         }
       });
 
-      _.forEach(fileContent, function(filepath){
-        grunt.log.writeln("Adding " + filepath + "features...");
-        content += "<pre><code class=\"gherkin\">\n" + grunt.file.read(filepath) + "\n</code></pre>";
+      _.forEach(validFiles, function(filepath, i){
+        var fileContent = grunt.file.read(filepath);
+        grunt.log.writeln("Adding " + filepath + " scenarios...");
+        content += "<div id=\"feature" + i + "\"><a class=\"title\" href=\"#\">" + getFeatureName(fileContent) + "</a>";
+        content += "<pre class=\"feature hide\"><code class=\"gherkin\">\n" + fileContent + "\n</code></pre></div>";
       });
     });
 
     var templateWithData = template.replace("{{ title }}", options.title).replace("{{ data }}", content);
 
     grunt.file.write(options.destination, templateWithData);
-
     grunt.log.writeln('File "' + options.destination + '" created.');
 
   });
-
 };
