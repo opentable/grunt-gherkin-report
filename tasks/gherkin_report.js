@@ -12,6 +12,7 @@ module.exports = function(grunt) {
     var content = "";
     var contentTree = {
       name: options.title,
+      subtitle: options.subtitle,
       items: [],
       children: {}
     };

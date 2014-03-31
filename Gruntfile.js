@@ -25,7 +25,8 @@ module.exports = function(grunt) {
       my_features: {
         options: {
           title: 'My project :: features',
-          destination: 'test/expected/report.html'
+          subtitle: 'Generated on ' + (new Date()).toISOString() + ', version: ' + grunt.option('versionNumber') || 'unknown',
+          destination: 'test/output/report.html'
         },
         files: [{
           cwd: 'test/fixtures',

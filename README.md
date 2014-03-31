@@ -1,6 +1,12 @@
-# grunt-gherkin-report WIP!
+# grunt-gherkin-report
 
 > It saves your gherking features in a html format
+
+Node version: **0.8.0** required
+
+Build status: [![Build Status](https://secure.travis-ci.org/opentable/logstash-redis.png?branch=master)](http://travis-ci.org/opentable/grunt-gherkin-report)
+
+[![NPM](https://nodei.co/npm/grunt-gherkin-report.png?downloads=true)](https://npmjs.org/package/grunt-gherkin-report)
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
@@ -25,11 +31,17 @@ In your project's Gruntfile, add a section named `gherkin_report` to the data ob
 ```js
 grunt.initConfig({
   gherkin_report: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
+    my_project: {
       // Target-specific file lists and/or options go here.
+      options: {
+        title: 'My project\'s features',
+        subtitle: 'Generated on ' + (new Date()).toISOString() + ', version: ' + grunt.option('versionNumber') || 'unknown',
+        destination: 'path-to-output/report.html'
+      },
+      files: [{
+        cwd: 'path/to/my/features',
+        src: ['**/*.feature']
+      }]
     },
   },
 });
@@ -37,53 +49,22 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.title
 Type: `String`
-Default value: `',  '`
 
-A string value that is used to do something with whatever.
+The title of your report.
 
-#### options.punctuation
+#### options.subtitle
 Type: `String`
-Default value: `'.'`
 
-A string value that is used to do something else with whatever else.
+A string that is saved during the generation and placed on the top of the generated document. Cool to place a date and a version here. Look at the example.
 
-### Usage Examples
+#### options.destination
+Type: `String`
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+The destination of your html report and its filename.
 
-```js
-grunt.initConfig({
-  gherkin-report: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+#### files
+Type: `Object`
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  specflow: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_
+The features to import.
