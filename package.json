@@ -1,7 +1,7 @@
 {
   "name": "grunt-gherkin-report",
   "description": "It saves your gherkin features in a html format",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/opentable/grunt-gherkin-report",
   "author": {
     "name": "Matteo Figus",
