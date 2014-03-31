@@ -12,7 +12,7 @@ Background:
     | hello                   | True         |
 
 @tag @another_tag
-Scenario: My Scenario
+Scenario: My scenario
     Given I am doing something
     And Something else
     And a json is like

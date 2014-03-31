@@ -10,6 +10,12 @@ module.exports = function(grunt) {
     var options = this.options({});
 
     var content = "";
+    var contentTree = {
+      name: options.title,
+      items: [],
+      children: {}
+    };
+
     var template = grunt.file.read(path.join(__dirname, 'template.html'));
 
     var getFeatureName = function(fileContent){
@@ -27,7 +33,7 @@ module.exports = function(grunt) {
     this.files.forEach(function(f) {
 
       var validFiles = f.src.filter(function(filepath) {
-        if (!grunt.file.exists(filepath)) {
+        if (!grunt.file.exists(path.join(f.cwd, filepath))){
           grunt.log.warn('Source file "' + filepath + '" not found.');
           return false;
         } else {
@@ -36,17 +42,28 @@ module.exports = function(grunt) {
       });
 
       _.forEach(validFiles, function(filepath, i){
-        var fileContent = grunt.file.read(filepath);
+        var fileContent = grunt.file.read(path.join(f.cwd, filepath));
+        var featureName = getFeatureName(fileContent);
         grunt.log.writeln("Adding " + filepath + " scenarios...");
-        content += "<div id=\"feature" + i + "\"><a class=\"title\" href=\"#\">" + getFeatureName(fileContent) + "</a>";
-        content += "<pre class=\"feature hide\"><code class=\"gherkin\">\n" + fileContent + "\n</code></pre></div>";
+
+        var splittedPath = filepath.split(path.sep);
+        var destPath = contentTree;
+
+        for(var j = 0; j < splittedPath.length - 1; j++){
+          if(!destPath.children[splittedPath[j]]){
+            destPath.children[splittedPath[j]] = { items: [], children: {}};
+          }
+
+          destPath = destPath.children[splittedPath[j]];
+        }
+
+        destPath.items.push({ name: featureName, content: fileContent });
       });
     });
 
-    var templateWithData = template.replace("{{ title }}", options.title).replace("{{ data }}", content);
+    var templateWithData = template.replace("{{ data }}", JSON.stringify(contentTree));
 
     grunt.file.write(options.destination, templateWithData);
     grunt.log.writeln('File "' + options.destination + '" created.');
-
   });
 };

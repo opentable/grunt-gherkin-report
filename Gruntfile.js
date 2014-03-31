@@ -24,12 +24,13 @@ module.exports = function(grunt) {
     gherkin_report: {
       my_features: {
         options: {
-          'title': 'My project :: features',
-          'destination': 'test/expected/report.html'
+          title: 'My project :: features',
+          destination: 'test/expected/report.html'
         },
-        files: {
-          'My features': ['test/fixtures/**/*.feature'],
-        },
+        files: [{
+          cwd: 'test/fixtures',
+          src: ['**/*.feature']
+        }]
       }
     },
 
