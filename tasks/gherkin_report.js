@@ -47,7 +47,7 @@ module.exports = function(grunt) {
         var featureName = getFeatureName(fileContent);
         grunt.log.writeln("Adding " + filepath + " scenarios...");
 
-        var splittedPath = filepath.split(path.sep);
+        var splittedPath = filepath.split('/');
         var destPath = contentTree;
 
         for(var j = 0; j < splittedPath.length - 1; j++){
