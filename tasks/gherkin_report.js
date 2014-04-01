@@ -5,11 +5,39 @@ module.exports = function(grunt) {
   var path = require('path');
   var _ = require('underscore');
 
-  grunt.registerMultiTask('gherkin_report', 'It saves your Cucumber/Specflow features files in a html format', function() {
+  var getFeatureName = function(fileContent){
+    var lines = fileContent.split("\n");
 
-    var options = this.options({});
+    for(var i = 0; i < lines.length; i++){
+      var line = lines[i];
+      if(line.indexOf('Feature:') >= 0){
+        return line.replace('Feature:', '').trim();
+      }
+    }
+    return "Unnamed feature";
+  };
 
-    var content = "";
+  var createNodeStructure = function(root, nodePath){
+
+    var splittedPath = nodePath.split('/');
+    var destPath = root;
+
+    for(var j = 0; j < splittedPath.length - 1; j++){
+      if(!destPath.children[splittedPath[j]]){
+        destPath.children[splittedPath[j]] = { 
+          items: [], 
+          children: {}
+        };
+      }
+      
+      destPath = destPath.children[splittedPath[j]];
+    }
+     
+    return destPath;   
+  };
+
+  var getContentTree = function(files, options){
+
     var contentTree = {
       name: options.title,
       subtitle: options.subtitle,
@@ -17,21 +45,7 @@ module.exports = function(grunt) {
       children: {}
     };
 
-    var template = grunt.file.read(path.join(__dirname, 'template.html'));
-
-    var getFeatureName = function(fileContent){
-      var lines = fileContent.split("\n");
-
-      for(var i = 0; i < lines.length; i++){
-        var line = lines[i];
-        if(line.indexOf('Feature:') >= 0){
-          return line.replace('Feature:', '').trim();
-        }
-      }
-      return "Unnamed feature";
-    };
-
-    this.files.forEach(function(f) {
+    files.forEach(function(f) {
 
       var validFiles = f.src.filter(function(filepath) {
         if (!grunt.file.exists(path.join(f.cwd, filepath))){
@@ -43,28 +57,32 @@ module.exports = function(grunt) {
       });
 
       _.forEach(validFiles, function(filepath, i){
-        var fileContent = grunt.file.read(path.join(f.cwd, filepath));
-        var featureName = getFeatureName(fileContent);
         grunt.log.writeln("Adding " + filepath + " scenarios...");
 
-        var splittedPath = filepath.split('/');
-        var destPath = contentTree;
+        var fileContent = grunt.file.read(path.join(f.cwd, filepath)),
+            featureName = getFeatureName(fileContent),
+            destPath = createNodeStructure(contentTree, filepath);
 
-        for(var j = 0; j < splittedPath.length - 1; j++){
-          if(!destPath.children[splittedPath[j]]){
-            destPath.children[splittedPath[j]] = { items: [], children: {}};
-          }
-
-          destPath = destPath.children[splittedPath[j]];
-        }
-
-        destPath.items.push({ name: featureName, content: fileContent });
+        destPath.items.push({ 
+          name: featureName, 
+          content: fileContent, 
+          fileName: filepath
+        });
       });
     });
+    
+    return contentTree;
+  };
 
-    var templateWithData = template.replace("{{ data }}", JSON.stringify(contentTree));
+  grunt.registerMultiTask('gherkin_report', 'It saves your Cucumber/Specflow features files in a html format', function() {
+
+    var options = this.options({}),
+        data = JSON.stringify(getContentTree(this.files, options)),
+        template = grunt.file.read(path.join(__dirname, 'template.html')),
+        templateWithData = template.replace("{{ data }}", data);
 
     grunt.file.write(options.destination, templateWithData);
+    
     grunt.log.writeln('File "' + options.destination + '" created.');
   });
 };
