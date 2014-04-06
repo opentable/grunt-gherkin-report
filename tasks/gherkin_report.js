@@ -5,17 +5,7 @@ module.exports = function(grunt) {
   var path = require('path');
   var _ = require('underscore');
 
-  var getFeatureName = function(fileContent){
-    var lines = fileContent.split("\n");
-
-    for(var i = 0; i < lines.length; i++){
-      var line = lines[i];
-      if(line.indexOf('Feature:') >= 0){
-        return line.replace('Feature:', '').trim();
-      }
-    }
-    return "Unnamed feature";
-  };
+  var parser = require('./parser');
 
   var createNodeStructure = function(root, nodePath){
 
@@ -24,16 +14,22 @@ module.exports = function(grunt) {
 
     for(var j = 0; j < splittedPath.length - 1; j++){
       if(!destPath.children[splittedPath[j]]){
-        destPath.children[splittedPath[j]] = { 
-          items: [], 
+        destPath.children[splittedPath[j]] = {
+          items: [],
           children: {}
         };
       }
-      
+
       destPath = destPath.children[splittedPath[j]];
     }
-     
-    return destPath;   
+
+    return destPath;
+  };
+
+  var getValidFiles = function(filesEntry){
+    return filesEntry.src.filter(function(filepath) {
+      return grunt.file.exists(path.join(filesEntry.cwd, filepath));
+    });
   };
 
   var getContentTree = function(files, options){
@@ -46,31 +42,21 @@ module.exports = function(grunt) {
     };
 
     files.forEach(function(f) {
-
-      var validFiles = f.src.filter(function(filepath) {
-        if (!grunt.file.exists(path.join(f.cwd, filepath))){
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      });
-
-      _.forEach(validFiles, function(filepath, i){
+      _.forEach(getValidFiles(f), function(filepath, i){
         grunt.log.writeln("Adding " + filepath + " scenarios...");
 
         var fileContent = grunt.file.read(path.join(f.cwd, filepath)),
-            featureName = getFeatureName(fileContent),
+            featureName = parser.getFeatureName(fileContent),
             destPath = createNodeStructure(contentTree, filepath);
 
-        destPath.items.push({ 
-          name: featureName, 
-          content: fileContent, 
+        destPath.items.push({
+          name: featureName,
+          content: fileContent,
           fileName: filepath
         });
       });
     });
-    
+
     return contentTree;
   };
 
@@ -82,7 +68,7 @@ module.exports = function(grunt) {
         templateWithData = template.replace("{{ data }}", data);
 
     grunt.file.write(options.destination, templateWithData);
-    
+
     grunt.log.writeln('File "' + options.destination + '" created.');
   });
 };
