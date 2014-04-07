@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         template = grunt.file.read(path.join(__dirname, 'template.html')),
         templateWithData = template.replace("{{ data }}", data);
 
-    grunt.file.write(options.destination, templateWithData);
+    grunt.file.write(options.destination, templateWithData, { encoding: 'utf-8' });
 
     grunt.log.writeln('File "' + options.destination + '" created.');
   });

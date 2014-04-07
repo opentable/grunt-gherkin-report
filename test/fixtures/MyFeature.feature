@@ -23,4 +23,4 @@ Scenario: My scenario
         }
         """
     When something happens
-    Then I should be happy
+    Then the response should contain something in Japanese like "ログイン"
