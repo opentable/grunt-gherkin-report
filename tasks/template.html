@@ -37,7 +37,7 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
           var hash = window.location.hash;
 
           if(hash !== ''){
-            var featureHash = hash.substr(1).replace(/\//g, '%2F'),
+            var featureHash = hash.substr(1),
                 feature = features[featureHash];
 
             if(feature){
@@ -59,10 +59,10 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
           }
 
           for(var i = 0; i < data.items.length; i++){
-            var featureId = encodeURIComponent(data.items[i].fileName);
+            var featureId = 'feature' + featureCount;
             features[featureId] = {
               data: data.items[i].content,
-              id: 'feature' + featureCount
+              id: featureId
             };
             root.push({
               id: 'feature' + featureCount,

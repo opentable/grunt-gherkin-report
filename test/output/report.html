@@ -30,14 +30,14 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
           }
         };
 
-        var data = {"name":"My project :: features","subtitle":"Generated on 2014-04-07T14:57:33.916Z, version: undefined","items":[{"name":"This is another feature","content":"Feature: This is another feature\n    In order to do something else\n    As a developer\n    I need to do something\n\n\nBackground: \n    Given I have a table like:\n    | Field Name              | Bla Bla      |\n    | hello                   | True         |\n    | world                   | True         |\n    | hello                   | True         |\n\n@tag @another_tag\nScenario: My scenario\n    Given I am doing something\n    And Something else\n    And a json is like\n        \"\"\"\n        {\n            property: 'value',\n            number: 123\n        }\n        \"\"\"\n    When something happens\n    Then I should be happy","fileName":"AnotherFeature.feature"},{"name":"This is a feature","content":"Feature: This is a feature\r\n    In order to do something\r\n    As a developer\r\n    I need to do something\r\n\r\n\r\nBackground: \r\n    Given I have a table like:\r\n    | Field Name              | Bla Bla      |\r\n    | hello                   | True         |\r\n    | world                   | True         |\r\n    | hello                   | True         |\r\n\r\n@tag @another_tag\r\nScenario: My scenario\r\n    Given I am doing something\r\n    And Something else\r\n    And a json is like\r\n        \"\"\"\r\n        {\r\n            property: 'value',\r\n            number: 123\r\n        }\r\n        \"\"\"\r\n    When something happens\r\n    Then the response should contain something in Japanese like \"ログイン\"","fileName":"MyFeature.feature"}],"children":{"SubCategory":{"items":[{"name":"This is another feature","content":"Feature: This is another feature\n    In order to do something else\n    As a developer\n    I need to do something\n\n\nBackground: \n    Given I have a table like:\n    | Field Name              | Bla Bla      |\n    | hello                   | True         |\n    | world                   | True         |\n    | hello                   | True         |\n\n@tag @another_tag\nScenario: My scenario\n    Given I am doing something\n    And Something else\n    And a json is like\n        \"\"\"\n        {\n            property: 'value',\n            number: 123\n        }\n        \"\"\"\n    When something happens\n    Then I should be happy","fileName":"SubCategory/Feature.feature"}],"children":{}}}};
+        var data = {"name":"My project :: features","subtitle":"Generated on 2014-04-15T14:59:40.811Z, version: undefined","items":[{"name":"This is another feature","content":"Feature: This is another feature\n    In order to do something else\n    As a developer\n    I need to do something\n\n\nBackground: \n    Given I have a table like:\n    | Field Name              | Bla Bla      |\n    | hello                   | True         |\n    | world                   | True         |\n    | hello                   | True         |\n\n@tag @another_tag\nScenario: My scenario\n    Given I am doing something\n    And Something else\n    And a json is like\n        \"\"\"\n        {\n            property: 'value',\n            number: 123\n        }\n        \"\"\"\n    When something happens\n    Then I should be happy","fileName":"AnotherFeature.feature"},{"name":"This is a feature","content":"Feature: This is a feature\r\n    In order to do something\r\n    As a developer\r\n    I need to do something\r\n\r\n\r\nBackground: \r\n    Given I have a table like:\r\n    | Field Name              | Bla Bla      |\r\n    | hello                   | True         |\r\n    | world                   | True         |\r\n    | hello                   | True         |\r\n\r\n@tag @another_tag\r\nScenario: My scenario\r\n    Given I am doing something\r\n    And Something else\r\n    And a json is like\r\n        \"\"\"\r\n        {\r\n            property: 'value',\r\n            number: 123\r\n        }\r\n        \"\"\"\r\n    When something happens\r\n    Then the response should contain something in Japanese like \"ログイン\"","fileName":"My Feature.feature"}],"children":{"Sub Category":{"items":[{"name":"This is another feature","content":"Feature: This is another feature\n    In order to do something else\n    As a developer\n    I need to do something\n\n\nBackground: \n    Given I have a table like:\n    | Field Name              | Bla Bla      |\n    | hello                   | True         |\n    | world                   | True         |\n    | hello                   | True         |\n\n@tag @another_tag\nScenario: My scenario\n    Given I am doing something\n    And Something else\n    And a json is like\n        \"\"\"\n        {\n            property: 'value',\n            number: 123\n        }\n        \"\"\"\n    When something happens\n    Then I should be happy","fileName":"Sub Category/Feature.feature"}],"children":{}}}};
         var features = {};
 
         var loadFeatureFromHash = function(selectNode){
           var hash = window.location.hash;
 
           if(hash !== ''){
-            var featureHash = hash.substr(1).replace(/\//g, '%2F'),
+            var featureHash = hash.substr(1),
                 feature = features[featureHash];
 
             if(feature){
@@ -59,10 +59,10 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
           }
 
           for(var i = 0; i < data.items.length; i++){
-            var featureId = encodeURIComponent(data.items[i].fileName);
+            var featureId = 'feature' + featureCount;
             features[featureId] = {
               data: data.items[i].content,
-              id: 'feature' + featureCount
+              id: featureId
             };
             root.push({
               id: 'feature' + featureCount,
