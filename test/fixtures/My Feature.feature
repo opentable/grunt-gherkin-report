@@ -24,3 +24,7 @@ Scenario: My scenario
         """
     When something happens
     Then the response should contain something in Japanese like "ログイン"
+
+Scenario: I include html stuff in a step
+    Given I do something
+    Then the following should include html |Hello, <a href="http://www.google.com">this is a link&gt;</a>|

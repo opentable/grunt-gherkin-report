@@ -41,7 +41,8 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
                 feature = features[featureHash];
 
             if(feature){
-              $(selectors.featureViewer).html(templates.codeSnippet(feature.data));
+              var snippet = templates.codeSnippet(decodeHtml(feature.data));
+              $(selectors.featureViewer).html(snippet);
               $(selectors.code).each(function(i, e){ hljs.highlightBlock(e); });
 
               if(selectNode){
@@ -49,6 +50,10 @@ var hljs=new function(){function j(v){return v.replace(/&/gm,"&amp;").replace(/<
               }
             }
           }
+        };
+
+        var decodeHtml = function(text){
+          return $('<div/>').text(text).html();
         };
 
         var featureCount = 0;
